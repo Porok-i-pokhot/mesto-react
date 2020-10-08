@@ -6,19 +6,52 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 
 function App() {
+
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+
+  const handleEditAvatarClick = ()=> {
+    setEditAvatarPopupOpen(true);
+    // document.querySelector('.popup_edit-avatar').classList.add('popup_opened');
+  }
+
+  const handleEditProfileClick = ()=> {
+    // document.querySelector('.popup_edit-profile').classList.add('popup_opened');
+    setEditProfilePopupOpen(true);
+  }
+
+  const handleAddPlaceClick = ()=> {
+    setAddPlacePopupOpen(true);
+    // document.querySelector('.popup_add-card').classList.add('popup_opened');
+  }
+
+  const closeAllPopups = ()=> {
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setEditAvatarPopupOpen(false);
+  }
+
   return (
     <div className="page">
       <Header />
 
       <div className="page__container">
 
-        <Main />
+        <Main
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+        />
 
         <Footer />
 
         <PopupWithForm
           title='Редактировать профиль'
           name='edit-profile'
+          buttonTitle='Сохранить'
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
           children={
             <>
               <input className="popup__input popup__input_type_name" type="text" value="Жак-Ив Кусто" placeholder="Имя"
@@ -36,6 +69,9 @@ function App() {
         <PopupWithForm
             title='Новое место'
             name='add-card'
+            buttonTitle='Сохранить'
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
             children={
               <>
                 <input className="popup__input popup__input_type_place" type="text" placeholder="Название" name="place"
@@ -53,6 +89,9 @@ function App() {
         <PopupWithForm
             title='Обновить аватар'
             name='edit-avatar'
+            buttonTitle='Сохранить'
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
             children={
               <>
                 <input className="popup__input popup__input_type_link" type="url" placeholder="Ссылка на аватар"
@@ -66,6 +105,7 @@ function App() {
         <PopupWithForm
             title='Вы уверены?'
             name='confirm-delete'
+            buttonTitle='Да'
         />
 
         <ImagePopup />
@@ -74,13 +114,13 @@ function App() {
 
       <template className="elements__template">
         <div className="element">
-          <button className="element__delete defocus"></button>
-          <div className="element__image"></div>
+          <button className="element__delete defocus"/>
+          <div className="element__image"/>
           <div className="element__info">
-            <h2 className="element__title"></h2>
+            <h2 className="element__title"/>
             <div className="element__like-container">
-              <button type="button" className="element__like defocus"></button>
-              <p className="element__likes-quantity"></p>
+              <button type="button" className="element__like defocus"/>
+              <p className="element__likes-quantity"/>
             </div>
           </div>
         </div>
