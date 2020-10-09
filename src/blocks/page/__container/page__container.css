@@ -1,7 +1,8 @@
 .page__container {
   color: #ffffff;
   max-width: 882px;
-  margin: 40px auto 60px;
+  margin: 40px auto 0;
+  padding-bottom: 60px;
   font-family: 'Inter', Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -13,7 +14,8 @@
 
 @media screen and (max-width: 1023px) {
   .page__container {
-  margin: 42px auto 36px;
+  margin: 42px auto 0;
+    padding-bottom: 36px;
   }
 }
 
