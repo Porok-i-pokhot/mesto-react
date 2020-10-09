@@ -12,19 +12,24 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
     const [userAvatar, setUserAvatar] = React.useState('');
     const [cards, setCards] = React.useState([]);
 
-    //изменение текущих значений переменных состояния
-    const setInitialData = (cardsData, userData) => {
+    //изменение текущих значений переменных состояния данных пользователя
+    const setUserData = (userData) => {
         setUserName(userData.name);
         setUserDescription(userData.about);
         setUserAvatar(userData.avatar);
-        setCards(cardsData);
     };
+
+    //изменение теукщего состояния массива карточек
+    const setCardData = (cardsData) => {
+        setCards(cardsData);
+    }
 
     React.useEffect(() => {
         const cardsAndUserInfo = Promise.all([api.getInitialCards(), api.getUserInfo()]);
         cardsAndUserInfo
             .then(([initialCards, userData]) => {
-                setInitialData(initialCards, userData)//получение данных пользователя и карточек с сервера и отрисовка на страницу
+                setUserData(userData); //получение данных пользователя с сервера и отрисовка на страницу
+                setCardData(initialCards) //получение данных карточек с сервера и орисовка на страницу
             })
             .catch((err) => {
                 console.log(err + ' , нам очень жаль');

@@ -60,11 +60,11 @@ function App() {
           onClose={closeAllPopups}
           children={
             <>
-              <input className="popup__input popup__input_type_name" type="text" value="Жак-Ив Кусто" placeholder="Имя"
+              <input className="popup__input popup__input_type_name" type="text" defaultValue="Жак-Ив Кусто" placeholder="Имя"
                    name="name" required minLength="2" maxLength="40" autoComplete="off"/>
               <span id='name-error'/>
 
-              <input className="popup__input popup__input_type_occupation" type="text" value="Исследователь океана"
+              <input className="popup__input popup__input_type_occupation" type="text" defaultValue="Исследователь океана"
                    placeholder="О себе" name="job" required minLength="2" maxLength="200" autoComplete="off"/>
               <span id='job-error'/>
 
