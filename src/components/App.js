@@ -112,19 +112,6 @@ function App() {
 
       </div>
 
-      <template className="elements__template">
-        <div className="element">
-          <button className="element__delete defocus"/>
-          <div className="element__image"/>
-          <div className="element__info">
-            <h2 className="element__title"/>
-            <div className="element__like-container">
-              <button type="button" className="element__like defocus"/>
-              <p className="element__likes-quantity"/>
-            </div>
-          </div>
-        </div>
-      </template>
     </div>
   );
 }
