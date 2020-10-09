@@ -1,11 +1,15 @@
 import React from "react";
 
-function Card({name, likes, link}) {
-    debugger;
+function Card({name, likes, link, onCardClick}) {
+
+    function handleClick() {
+        onCardClick({link, name});
+    }
+
     return(
             <div className="element">
                 <button className="element__delete defocus"/>
-                <div className="element__image" style={{ backgroundImage: `url(${link})` }} />
+                <div className="element__image" style={{ backgroundImage: `url(${link})` }} onClick={handleClick}/>
                 <div className="element__info">
                     <h2 className="element__title">{name}</h2>
                     <div className="element__like-container">

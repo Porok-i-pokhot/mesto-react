@@ -17,8 +17,6 @@ function PopupWithForm({title, name, buttonTitle, children, isOpen, onClose}) {
          }
     });
 
-    const popupName = document.querySelector(`.popup_${name}`);
-
     //закрытие попапо по клику на оверлэй
     const handlerOverlayClick = (evt) => {
         const isPopup = evt.target.classList.contains('popup');
