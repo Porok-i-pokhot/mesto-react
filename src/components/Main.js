@@ -4,20 +4,25 @@ import editButtonImage from '../images/edit-button.svg';
 import addButtonImage from '../images/add-button.svg';
 import {api} from '../utils/api.js';
 import Card from './Card.js';
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
-    const [userName, setUserName] = React.useState('');
-    const [userDescription, setUserDescription] = React.useState('');
-    const [userAvatar, setUserAvatar] = React.useState('');
+    const currentUser = React.useContext(CurrentUserContext);
+
     const [cards, setCards] = React.useState([]);
 
-    //изменение текущих значений переменных состояния данных пользователя
-    const setUserData = (userData) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-    };
+    function handleCardLike(card) {
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+        // Отправляем запрос в API и получаем обновлённые данные карточки
+        api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+            // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+            const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+            // Обновляем стейт
+            setCards(newCards);
+        });
+    }
 
     //изменение теукщего состояния массива карточек
     const setCardData = (cardsData) => {
@@ -25,10 +30,9 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
     }
 
     React.useEffect(() => {
-        const cardsAndUserInfo = Promise.all([api.getInitialCards(), api.getUserInfo()]);
-        cardsAndUserInfo
-            .then(([initialCards, userData]) => {
-                setUserData(userData); //получение данных пользователя с сервера и отрисовка на страницу
+        const cardsInfo = api.getInitialCards();
+        cardsInfo
+            .then((initialCards) => {
                 setCardData(initialCards) //получение данных карточек с сервера и орисовка на страницу
             })
             .catch((err) => {
@@ -43,19 +47,19 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
                 <div className="profile__container">
                     <div className="profile__avatar-container" onClick={onEditAvatar}>
-                        <img src={userAvatar} className="profile__avatar" alt="аватар"/>
+                        <img src={currentUser.avatar} className="profile__avatar" alt="аватар"/>
                         <div className="profile__edit-avatar-container">
                             <img src={editAvatarImage} alt="карандаш"/>
                         </div>
                     </div>
                     <div className="profile__info">
                         <div className="profile__main-information">
-                            <h1 className="profile__name">{userName}</h1>
+                            <h1 className="profile__name">{currentUser.name}</h1>
                             <button className="profile__edit-button defocus" type="button" onClick={onEditProfile}>
                                 <img src={editButtonImage} alt="карандаш"/>
                             </button>
                         </div>
-                        <p className="profile__occupation">{userDescription}</p>
+                        <p className="profile__occupation">{currentUser.about}</p>
                     </div>
                 </div>
                 <button className="profile__add-button defocus" type="button" onClick={onAddPlace}>

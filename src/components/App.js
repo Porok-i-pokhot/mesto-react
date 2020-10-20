@@ -4,8 +4,12 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import {api} from '../utils/api.js';
+import {CurrentUserContext} from '../contexts/CurrentUserContext';
+
 
 function App() {
+
 
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
@@ -13,31 +17,47 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
 
+  const [currentUser, setCurrentUser] = React.useState('');
+
+  React.useEffect(() => {
+    const userInfo = api.getUserInfo();
+
+    userInfo
+        .then((userData) => {
+      setCurrentUser(userData);
+    })
+        .catch((err) => {
+          console.log(err + ' , нам очень жаль');
+        });
+  }, []);
+
   const handleEditAvatarClick = ()=> {
     setEditAvatarPopupOpen(true);
-  }
+  };
 
   const handleEditProfileClick = ()=> {
     setEditProfilePopupOpen(true);
-  }
+  };
 
   const handleAddPlaceClick = ()=> {
     setAddPlacePopupOpen(true);
-  }
+  };
 
   const handleCardClick = (cardData) => {
     setImagePopupOpen(true);
     setSelectedCard(cardData)
-  }
+  };
 
   const closeAllPopups = ()=> {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setImagePopupOpen(false);
-  }
+  };
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
+
     <div className="page">
       <Header />
 
@@ -119,6 +139,8 @@ function App() {
       </div>
 
     </div>
+
+    </CurrentUserContext.Provider>
   );
 }
 
