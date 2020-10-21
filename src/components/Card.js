@@ -1,14 +1,14 @@
 import React from "react";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-function Card({name, likes, link, owner, _id, onCardClick}) {
+function Card({name, likes, link, owner, _id, onCardClick, onCardLike}) {
 
     const currentUser = React.useContext(CurrentUserContext);
 
     const isOwn = owner._id === currentUser._id;
 
     const cardDeleteButtonClassName =
-        `card__delete-button ${isOwn ? '' : 'element__delete_hide'}`
+        `element__delete ${isOwn ? '' : 'element__delete_hide'}`
     ;
 
     const isLiked = likes.some(item => item._id === currentUser._id);
@@ -18,15 +18,19 @@ function Card({name, likes, link, owner, _id, onCardClick}) {
     function handleClick() {
         onCardClick({link, name});
     }
+    
+    function handleLikeClick() {
+        onCardLike(likes, _id);
+    }
 
     return(
             <div className="element">
-                <button className="element__delete defocus"/>
+                <button className={cardDeleteButtonClassName}/>
                 <div className="element__image" style={{ backgroundImage: `url(${link})` }} onClick={handleClick}/>
                 <div className="element__info">
                     <h2 className="element__title">{name}</h2>
                     <div className="element__like-container">
-                        <button type="button" className="element__like defocus"/>
+                        <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick}/>
                         <p className="element__likes-quantity">{likes.length}</p>
                     </div>
                 </div>

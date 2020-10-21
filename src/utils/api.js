@@ -109,6 +109,16 @@ export default class Api {
       });
   }
 
+  changeLikeCardStatus(id, isLiked) {
+      debugger;
+      // if(isLiked) {
+      //     return this.deleteLike(id);
+      // } else {
+      //     return this.putLike(id);
+      // }
+      return isLiked ? this.deleteLike(id) : this.putLike(id);
+  }
+
   deleteCard(id) {
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: 'DELETE',

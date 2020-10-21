@@ -12,13 +12,11 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
     const [cards, setCards] = React.useState([]);
 
-    function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-        // Отправляем запрос в API и получаем обновлённые данные карточки
-        api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    function handleCardLike(likes, cardId) {
+        const isLiked = likes.some(item => item._id === currentUser._id);
+        api.changeLikeCardStatus(cardId, isLiked).then((newCard) => {
             // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-            const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+            const newCards = cards.map((item) => item._id === cardId ? newCard : item);
             // Обновляем стейт
             setCards(newCards);
         });
@@ -68,8 +66,8 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
             </section>
 
             <section className="elements">
-                {cards.map(({_id, ...item}) => (
-                    <Card key={_id} {...item} onCardClick={onCardClick}/>
+                {cards.map((item) => (
+                    <Card key={item._id} {...item} onCardClick={onCardClick} onCardLike={handleCardLike}/>
                     )
                 )}
             </section>
