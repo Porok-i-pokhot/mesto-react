@@ -12,20 +12,31 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
     const [cards, setCards] = React.useState([]);
 
-    function handleCardLike(likes, cardId) {
+    function handleCardLike({likes, _id}) {
         const isLiked = likes.some(item => item._id === currentUser._id);
-        api.changeLikeCardStatus(cardId, isLiked).then((newCard) => {
+        api.changeLikeCardStatus(_id, !isLiked).then((newCard) => {
             // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-            const newCards = cards.map((item) => item._id === cardId ? newCard : item);
+            const newCards = cards.map((item) => item._id === _id ? newCard : item);
             // Обновляем стейт
             setCards(newCards);
+        }) .catch((err) => {
+            console.log(err + ' , нам очень жаль');
+        });
+    }
+    
+    function handleCardDelete(cardId) {
+        api.deleteCard(cardId).then(() => {
+            const newCards = cards.filter((item) => item._id !== cardId);
+            setCards(newCards);
+        }) .catch((err) => {
+            console.log(err + ' , нам очень жаль');
         });
     }
 
     //изменение теукщего состояния массива карточек
     const setCardData = (cardsData) => {
         setCards(cardsData);
-    }
+    };
 
     React.useEffect(() => {
         const cardsInfo = api.getInitialCards();
@@ -67,7 +78,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
             <section className="elements">
                 {cards.map((item) => (
-                    <Card key={item._id} {...item} onCardClick={onCardClick} onCardLike={handleCardLike}/>
+                    <Card key={item._id} {...item} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
                     )
                 )}
             </section>

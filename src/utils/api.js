@@ -110,13 +110,12 @@ export default class Api {
   }
 
   changeLikeCardStatus(id, isLiked) {
-      debugger;
       // if(isLiked) {
       //     return this.deleteLike(id);
       // } else {
       //     return this.putLike(id);
       // }
-      return isLiked ? this.deleteLike(id) : this.putLike(id);
+      return isLiked ? this.putLike(id) : this.deleteLike(id);
   }
 
   deleteCard(id) {
