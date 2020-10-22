@@ -14,12 +14,22 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
         setLink(evt.target.value);
     }
 
+    function resetInputs() {
+        console.log('Yes');
+        setTitle('');
+        setLink('');
+    }
+
     function handleSubmit(evt) {
         evt.preventDefault();
 
-        onAddPlace({
+        const editPromise = onAddPlace({
             name: title,
             link: link
+        });
+
+        editPromise.finally(() => {
+            resetInputs();
         });
     }
     

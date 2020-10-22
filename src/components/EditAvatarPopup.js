@@ -5,10 +5,18 @@ function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
 
     const inputRef = React.useRef();
 
+    function resetInputs() {
+        inputRef.current.value = '';
+    }
+
     function handleSubmit(evt) {
         evt.preventDefault();
-        onUpdateAvatar({
+        const editPromise = onUpdateAvatar({
             avatar: inputRef.current.value
+        });
+
+        editPromise.finally(() => {
+            resetInputs();
         });
     }
 

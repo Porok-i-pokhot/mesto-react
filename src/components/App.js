@@ -15,7 +15,6 @@ function App() {
 
   const [cards, setCards] = React.useState([]);
 
-
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -69,17 +68,19 @@ function App() {
         .catch((err) => {
           console.log(err + ' , нам очень жаль');
         });
+
   }
   
   function handleAddPlaceSubmit(newDataOfCard) {
-    api.addNewCard(newDataOfCard)
+    const newPromise = api.addNewCard(newDataOfCard)
         .then((newCardData) => {
-          setCards([newCardData, ...cards]);
-        })
+          setCards([...cards, newCardData]);
+        });
+    return newPromise;
   }
   
   function handleUpdateAvatar(newDataOfAvatar) {
-    api.changeAvatar(newDataOfAvatar)
+    const newPromise = api.changeAvatar(newDataOfAvatar)
         .then((newAvatarData) => {
           setCurrentUser(newAvatarData);
           closeAllPopups();
@@ -87,6 +88,7 @@ function App() {
         .catch((err) => {
           console.log(err + ' , нам очень жаль');
         });
+    return newPromise;
   }
 
   function handleCardLike({likes, _id}) {
