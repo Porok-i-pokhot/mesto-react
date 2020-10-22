@@ -7,7 +7,6 @@ function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
 
     function handleSubmit(evt) {
         evt.preventDefault();
-debugger
         onUpdateAvatar({
             avatar: inputRef.current.value
         });

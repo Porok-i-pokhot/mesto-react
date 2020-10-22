@@ -33,7 +33,6 @@ export default class Api {
   }
 
   setEditedUserInfo(data) {
-      debugger
     return fetch(`${this.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this.headers,
@@ -51,11 +50,12 @@ export default class Api {
   }
 
   addNewCard(data) {
+      debugger
     return fetch(`${this.baseUrl}/cards`, {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify({
-        name: data.place,
+        name: data.name,
         link: data.link
       })
     })
@@ -110,11 +110,6 @@ export default class Api {
   }
 
   changeLikeCardStatus(id, isLiked) {
-      // if(isLiked) {
-      //     return this.deleteLike(id);
-      // } else {
-      //     return this.putLike(id);
-      // }
       return isLiked ? this.putLike(id) : this.deleteLike(id);
   }
 

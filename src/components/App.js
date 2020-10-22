@@ -8,9 +8,12 @@ import {api} from '../utils/api.js';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 
 function App() {
+
+  const [cards, setCards] = React.useState([]);
 
 
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -57,8 +60,8 @@ function App() {
     setImagePopupOpen(false);
   };
   
-  function handleUpdateUser(newDataUser) {
-    api.setEditedUserInfo(newDataUser)
+  function handleUpdateUser(newDataOfUser) {
+    api.setEditedUserInfo(newDataOfUser)
         .then((newUserData) => {
           setCurrentUser(newUserData);
           closeAllPopups();
@@ -68,8 +71,15 @@ function App() {
         });
   }
   
-  function handleUpdateAvatar(newDataAvatar) {
-    api.changeAvatar(newDataAvatar)
+  function handleAddPlaceSubmit(newDataOfCard) {
+    api.addNewCard(newDataOfCard)
+        .then((newCardData) => {
+          setCards([newCardData, ...cards]);
+        })
+  }
+  
+  function handleUpdateAvatar(newDataOfAvatar) {
+    api.changeAvatar(newDataOfAvatar)
         .then((newAvatarData) => {
           setCurrentUser(newAvatarData);
           closeAllPopups();
@@ -78,6 +88,43 @@ function App() {
           console.log(err + ' , нам очень жаль');
         });
   }
+
+  function handleCardLike({likes, _id}) {
+    const isLiked = likes.some(item => item._id === currentUser._id);
+    api.changeLikeCardStatus(_id, !isLiked).then((newCard) => {
+      // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+      const newCards = cards.map((item) => item._id === _id ? newCard : item);
+      // Обновляем стейт
+      setCards(newCards);
+    }) .catch((err) => {
+      console.log(err + ' , нам очень жаль');
+    });
+  }
+
+  function handleCardDelete(cardId) {
+    api.deleteCard(cardId).then(() => {
+      const newCards = cards.filter((item) => item._id !== cardId);
+      setCards(newCards);
+    }) .catch((err) => {
+      console.log(err + ' , нам очень жаль');
+    });
+  }
+
+  //изменение теукщего состояния массива карточек
+  const setCardData = (cardsData) => {
+    setCards(cardsData);
+  };
+
+  React.useEffect(() => {
+    const cardsInfo = api.getInitialCards();
+    cardsInfo
+        .then((initialCards) => {
+          setCardData(initialCards) //получение данных карточек с сервера и орисовка на страницу
+        })
+        .catch((err) => {
+          console.log(err + ' , нам очень жаль');
+        });
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -92,6 +139,9 @@ function App() {
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
             onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
         />
 
         <Footer />
@@ -100,25 +150,8 @@ function App() {
 
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
-        <PopupWithForm
-            title='Новое место'
-            name='add-card'
-            buttonTitle='Сохранить'
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            children={
-              <>
-                <input className="popup__input popup__input_type_place" type="text" placeholder="Название" name="place"
-                       required minLength="1" maxLength="30" autoComplete="off"/>
-                <span id='place-error'/>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
 
-                <input className="popup__input popup__input_type_link" type="url" placeholder="Ссылка на картинку"
-                       name="link" required autoComplete="off"/>
-                <span id='link-error'/>
-
-              </>
-            }
-        />
 
         <PopupWithForm
             title='Вы уверены?'
