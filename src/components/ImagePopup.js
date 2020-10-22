@@ -4,19 +4,7 @@ import closeIcon from '../images/close-icon.svg';
 
 function ImagePopup({card, isOpen, onClose}) {
 
-    const handlerEscKeydown = (evt) => {
-        if (evt.key === "Escape") {
-            onClose();
-        }
-    }
 
-    //закрытие попапа по нажатию на Esc
-    React.useEffect(() => {
-        document.addEventListener('keydown', handlerEscKeydown);
-        return() => {
-            document.removeEventListener('keydown', handlerEscKeydown);
-        }
-    });
 
     //закрытие попапо по клику на оверлэй
     const handlerOverlayClick = (evt) => {

@@ -3,24 +3,12 @@ import closeIcon from '../images/close-icon.svg';
 
 function PopupWithForm({title, name, buttonTitle, children, isOpen, onClose, onSubmit}) {
 
-    const handlerEscKeydown = (evt) => {
-        if (evt.key === "Escape") {
-            onClose();
-        }
-    }
 
-    //закрытие попапа по нажатию на Esc
-    React.useEffect(() => {
-        document.addEventListener('keydown', handlerEscKeydown);
-            return() => {
-             document.removeEventListener('keydown', handlerEscKeydown);
-         }
-    });
 
     //закрытие попапо по клику на оверлэй
     const handlerOverlayClick = (evt) => {
         const isPopup = evt.target.classList.contains('popup');
-        if(isPopup) {
+        if (isPopup) {
             onClose();
         }
     };

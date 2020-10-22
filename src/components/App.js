@@ -74,7 +74,7 @@ function App() {
   function handleAddPlaceSubmit(newDataOfCard) {
     const newPromise = api.addNewCard(newDataOfCard)
         .then((newCardData) => {
-          setCards([...cards, newCardData]);
+          setCards([newCardData, ...cards]);
         });
     return newPromise;
   }
@@ -127,6 +127,21 @@ function App() {
           console.log(err + ' , нам очень жаль');
         });
   }, []);
+
+  const handlerEscKeydown = (evt) => {
+    if (evt.key === "Escape") {
+      closeAllPopups();
+    }
+  };
+
+  //закрытие попапа по нажатию на Esc
+  React.useEffect(() => {
+    document.addEventListener('keydown', handlerEscKeydown);
+    return() => {
+      document.removeEventListener('keydown', handlerEscKeydown);
+    }
+  }, []);
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
