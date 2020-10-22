@@ -50,7 +50,6 @@ export default class Api {
   }
 
   addNewCard(data) {
-      debugger
     return fetch(`${this.baseUrl}/cards`, {
       method: 'POST',
       headers: this.headers,
