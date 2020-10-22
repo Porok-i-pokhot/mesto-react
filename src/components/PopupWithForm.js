@@ -35,7 +35,7 @@ function PopupWithForm({title, name, buttonTitle, children, isOpen, onClose, onS
                 <form className="popup__form" action="#" name={name} noValidate onSubmit={onSubmit}>
                     {children}
                     <button type="submit"
-                            className="popup__form-button popup__form-button_disabled defocus"
+                            className="popup__form-button defocus"
                             onClick={onClose}>{buttonTitle}
                     </button>
                 </form>

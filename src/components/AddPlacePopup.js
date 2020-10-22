@@ -43,11 +43,15 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
             onSubmit={handleSubmit}
             children={
                 <>
-                    <input className="popup__input popup__input_type_place" type="text" placeholder="Название" name="place"
+                    <input
+                        value={title}
+                        className="popup__input popup__input_type_place" type="text" placeholder="Название" name="place"
                            required minLength="1" maxLength="30" autoComplete="off" onChange={handleChangeTitle}/>
                     <span id='place-error'/>
 
-                    <input className="popup__input popup__input_type_link" type="url" placeholder="Ссылка на картинку"
+                    <input
+                        value={link}
+                        className="popup__input popup__input_type_link" type="url" placeholder="Ссылка на картинку"
                            name="link" required autoComplete="off" onChange={handleChangeLink}/>
                     <span id='link-error'/>
 
