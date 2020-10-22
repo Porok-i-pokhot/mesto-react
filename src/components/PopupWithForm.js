@@ -1,7 +1,7 @@
 import React from "react";
 import closeIcon from '../images/close-icon.svg';
 
-function PopupWithForm({title, name, buttonTitle, children, isOpen, onClose}) {
+function PopupWithForm({title, name, buttonTitle, children, isOpen, onClose, onSubmit}) {
 
     const handlerEscKeydown = (evt) => {
         if (evt.key === "Escape") {
@@ -32,12 +32,11 @@ function PopupWithForm({title, name, buttonTitle, children, isOpen, onClose}) {
                     <img src={closeIcon} className="popup__close-icon-image" alt="крестик"/>
                 </button>
                 <h2 className="popup__title">{title}</h2>
-                <form className="popup__form" action="#" name={name} noValidate>
+                <form className="popup__form" action="#" name={name} noValidate onSubmit={onSubmit}>
                     {children}
                     <button type="submit"
                             className="popup__form-button popup__form-button_disabled defocus"
-                            onClick={onClose}
-                            disabled>{buttonTitle}
+                            onClick={onClose}>{buttonTitle}
                     </button>
                 </form>
             </div>

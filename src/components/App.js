@@ -6,6 +6,8 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import {api} from '../utils/api.js';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 
 function App() {
@@ -54,6 +56,28 @@ function App() {
     setEditAvatarPopupOpen(false);
     setImagePopupOpen(false);
   };
+  
+  function handleUpdateUser(newDataUser) {
+    api.setEditedUserInfo(newDataUser)
+        .then((newUserData) => {
+          setCurrentUser(newUserData);
+          closeAllPopups();
+        })
+        .catch((err) => {
+          console.log(err + ' , нам очень жаль');
+        });
+  }
+  
+  function handleUpdateAvatar(newDataAvatar) {
+    api.changeAvatar(newDataAvatar)
+        .then((newAvatarData) => {
+          setCurrentUser(newAvatarData);
+          closeAllPopups();
+        })
+        .catch((err) => {
+          console.log(err + ' , нам очень жаль');
+        });
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -72,25 +96,9 @@ function App() {
 
         <Footer />
 
-        <PopupWithForm
-          title='Редактировать профиль'
-          name='edit-profile'
-          buttonTitle='Сохранить'
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          children={
-            <>
-              <input className="popup__input popup__input_type_name" type="text" defaultValue="Жак-Ив Кусто" placeholder="Имя"
-                   name="name" required minLength="2" maxLength="40" autoComplete="off"/>
-              <span id='name-error'/>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
 
-              <input className="popup__input popup__input_type_occupation" type="text" defaultValue="Исследователь океана"
-                   placeholder="О себе" name="job" required minLength="2" maxLength="200" autoComplete="off"/>
-              <span id='job-error'/>
-
-            </>
-          }
-        />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
         <PopupWithForm
             title='Новое место'
@@ -107,22 +115,6 @@ function App() {
                 <input className="popup__input popup__input_type_link" type="url" placeholder="Ссылка на картинку"
                        name="link" required autoComplete="off"/>
                 <span id='link-error'/>
-
-              </>
-            }
-        />
-
-        <PopupWithForm
-            title='Обновить аватар'
-            name='edit-avatar'
-            buttonTitle='Сохранить'
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            children={
-              <>
-                <input className="popup__input popup__input_type_link" type="url" placeholder="Ссылка на аватар"
-                       name="avatar" required autoComplete="off"/>
-                <span id='avatar-error'/>
 
               </>
             }

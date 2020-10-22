@@ -33,12 +33,13 @@ export default class Api {
   }
 
   setEditedUserInfo(data) {
+      debugger
     return fetch(`${this.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.job
+        about: data.about
       })
     })
       .then((res) => {
@@ -50,7 +51,6 @@ export default class Api {
   }
 
   addNewCard(data) {
-    // debugger;
     return fetch(`${this.baseUrl}/cards`, {
       method: 'POST',
       headers: this.headers,
